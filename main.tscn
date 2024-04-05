@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://8u8675tkctnr"]
+
+[ext_resource type="PackedScene" uid="uid://b1q5vjf5i8cq3" path="res://UR_Skeleton/ur.tscn" id="1_p121u"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_11tbs"]
+sky_top_color = Color(0.384314, 0.454902, 0.54902, 1)
+sky_horizon_color = Color(0.646078, 0.655882, 0.670588, 1)
+ground_bottom_color = Color(0.2, 0.168627, 0.133333, 1)
+ground_horizon_color = Color(0.646078, 0.655882, 0.670588, 1)
+
+[sub_resource type="Sky" id="Sky_ucc0n"]
+sky_material = SubResource("ProceduralSkyMaterial_11tbs")
+
+[sub_resource type="Environment" id="Environment_34lqk"]
+background_mode = 2
+sky = SubResource("Sky_ucc0n")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_34lqk")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 2, 0)
+
+[node name="UR" parent="." instance=ExtResource("1_p121u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)

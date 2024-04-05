@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://b1q5vjf5i8cq3"]
+
+[ext_resource type="PackedScene" uid="uid://bk4rx6gndhjjg" path="res://UR_Skeleton/UR.glb" id="1_bu5ql"]
+[ext_resource type="Script" path="res://UR_Skeleton/start_IK.gd" id="2_8tdu4"]
+[ext_resource type="Script" path="res://UR_Skeleton/stepTarget.gd" id="3_shvvb"]
+[ext_resource type="Script" path="res://UR_Skeleton/IKTarget.gd" id="4_gkxqd"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1y1co"]
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_tykwp"]
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="UR" instance=ExtResource("1_bu5ql")]
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+bones/1/rotation = Quaternion(0.5, 0.5, 0.5, -0.5)
+bones/3/rotation = Quaternion(0.5, -0.5, -0.5, -0.5)
+bones/5/rotation = Quaternion(0.5, 0.5, 0.5, -0.5)
+bones/6/rotation = Quaternion(0.5, 0.5, 0.5, 0.5)
+bones/7/rotation = Quaternion(-0.5, -0.5, -0.5, 0.5)
+bones/8/rotation = Quaternion(-2.15762e-22, -3.7749e-08, 1.09404e-22, 1)
+
+[node name="SkeletonIK3D" type="SkeletonIK3D" parent="Armature/Skeleton3D" index="7"]
+process_priority = 1
+root_bone = &"base"
+tip_bone = &"TCP"
+target_node = NodePath("../../../IKTarget")
+script = ExtResource("2_8tdu4")
+
+[node name="IKTarget" type="Marker3D" parent="." index="1" node_paths=PackedStringArray("step_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.219385, 1.11032, 0)
+top_level = true
+script = ExtResource("4_gkxqd")
+step_target = NodePath("../stepTarget")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="IKTarget" index="0"]
+visible = false
+mesh = SubResource("CylinderMesh_1y1co")
+skeleton = NodePath("../..")
+
+[node name="stepTarget" type="Marker3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.806651, 0, -0.550646)
+script = ExtResource("3_shvvb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="stepTarget" index="0"]
+mesh = SubResource("BoxMesh_tykwp")
+skeleton = NodePath("../..")
